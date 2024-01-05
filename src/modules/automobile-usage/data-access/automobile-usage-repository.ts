@@ -2,14 +2,13 @@ import { v4 as uuidv4 } from "uuid";
 
 import { AutomobileUsage } from "../domain/AutomobileUsageModel";
 import { AutomobileUsageProvider } from "../domain/automobile-usage-protocols";
-import { UpdateDTO, StorageDTO } from "../domain/automobile-usage-dtos";
+import { StorageDTO, UpdateDTO } from "../domain/automobile-usage-dtos";
 
 let db: AutomobileUsage[] = [];
 
 export class AutomobileUsageRepository implements AutomobileUsageProvider {
   public async getAll(): Promise<AutomobileUsage[] | []> {
-    const automobileUsages = db;
-    return automobileUsages;
+    return db;
   }
 
   public async isValidDriver(driverId: string): Promise<boolean> {
