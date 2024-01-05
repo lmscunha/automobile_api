@@ -47,7 +47,7 @@ describe("AutomobileUsageService", () => {
         name: "Doe",
       });
 
-      const autombile2 = await automobileRepositoryFaker.save({
+      const automobile2 = await automobileRepositoryFaker.save({
         licensePlate: "AAA1A12",
         brand: "Foo",
         color: "Red",
@@ -63,7 +63,7 @@ describe("AutomobileUsageService", () => {
       await automobileUsageService.registerAutomobileUsage({
         startDate: "12/12/23",
         driverId: driver2.id,
-        automobileId: autombile2.id,
+        automobileId: automobile2.id,
         reason: "Test 2",
       });
 
