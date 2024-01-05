@@ -27,7 +27,7 @@ describe("AutomobileUsageService", () => {
 
   describe("getAllUsages", () => {
     test("should return [] if no automobile usage was registered", async () => {
-      const result = await automobileUsageService.getAllAutomobileUsages({});
+      const result = await automobileUsageService.getAllAutomobileUsages();
 
       expect(result).toEqual({ ok: true, automobileUsage: [] });
     });
@@ -67,7 +67,7 @@ describe("AutomobileUsageService", () => {
         reason: "Test 2",
       });
 
-      const result = await automobileUsageService.getAllAutomobileUsages({});
+      const result = await automobileUsageService.getAllAutomobileUsages();
 
       expect(result.automobileUsage.length).toEqual(2);
     });
