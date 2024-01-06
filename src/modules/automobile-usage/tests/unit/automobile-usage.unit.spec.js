@@ -2,7 +2,7 @@ const {
   AutomobileRepositoryFaker,
 } = require("../../../automobiles/data-access/automobile-fake-repository");
 const {
-  DriverRepositoryFaker,
+  DriverFakeRepository,
 } = require("../../../drivers/data-access/driver-fake-repository");
 const {
   AutomobileUsageRepositoryFaker,
@@ -13,11 +13,11 @@ const {
 
 const repositoryFaker = new AutomobileUsageRepositoryFaker();
 const automobileRepositoryFaker = new AutomobileRepositoryFaker();
-const driverRepositoryFaker = new DriverRepositoryFaker();
+const driverFakeRepository = new DriverFakeRepository();
 const automobileUsageService = new AutomobileUsageService(
   repositoryFaker,
   automobileRepositoryFaker,
-  driverRepositoryFaker,
+  driverFakeRepository,
 );
 
 describe("AutomobileUsageService", () => {
@@ -33,7 +33,7 @@ describe("AutomobileUsageService", () => {
     });
 
     test("should return all automobileUsage", async () => {
-      const driver = await driverRepositoryFaker.save({
+      const driver = await driverFakeRepository.save({
         name: "John",
       });
 
@@ -43,7 +43,7 @@ describe("AutomobileUsageService", () => {
         color: "Blue",
       });
 
-      const driver2 = await driverRepositoryFaker.save({
+      const driver2 = await driverFakeRepository.save({
         name: "Doe",
       });
 
@@ -75,7 +75,7 @@ describe("AutomobileUsageService", () => {
 
   describe("registerAUsage", () => {
     test("should register an automobile Usage", async () => {
-      const driver = await driverRepositoryFaker.save({
+      const driver = await driverFakeRepository.save({
         name: "John",
       });
 
@@ -113,7 +113,7 @@ describe("AutomobileUsageService", () => {
     });
 
     test("should not register if date has invalid format", async () => {
-      const driver = await driverRepositoryFaker.save({
+      const driver = await driverFakeRepository.save({
         name: "John",
       });
 
@@ -158,7 +158,7 @@ describe("AutomobileUsageService", () => {
     });
 
     test("should return {ok:false, why:driver-already-has-a-usage} if a driver tries to use more than one automobile", async () => {
-      const driver = await driverRepositoryFaker.save({
+      const driver = await driverFakeRepository.save({
         name: "John",
       });
 
@@ -190,7 +190,7 @@ describe("AutomobileUsageService", () => {
     });
 
     test("should register an automobile Usage if all drivers usage were done", async () => {
-      const driver = await driverRepositoryFaker.save({
+      const driver = await driverFakeRepository.save({
         name: "John",
       });
 
@@ -242,7 +242,7 @@ describe("AutomobileUsageService", () => {
     });
 
     test("should not register bad input", async () => {
-      const driver = await driverRepositoryFaker.save({
+      const driver = await driverFakeRepository.save({
         name: "John",
       });
 
@@ -283,7 +283,7 @@ describe("AutomobileUsageService", () => {
 
   describe("updateDriver", () => {
     test("should update an automobile usage", async () => {
-      const driver = await driverRepositoryFaker.save({
+      const driver = await driverFakeRepository.save({
         name: "John",
       });
 
@@ -329,7 +329,7 @@ describe("AutomobileUsageService", () => {
     });
 
     test("should not update if there is no data to update", async () => {
-      const driver = await driverRepositoryFaker.save({
+      const driver = await driverFakeRepository.save({
         name: "John",
       });
 
@@ -359,7 +359,7 @@ describe("AutomobileUsageService", () => {
     });
 
     test("should return {ok:false, why:no-automobile-usage-found} if there is no automobile usage with that id", async () => {
-      const driver = await driverRepositoryFaker.save({
+      const driver = await driverFakeRepository.save({
         name: "John",
       });
 
@@ -388,7 +388,7 @@ describe("AutomobileUsageService", () => {
     });
 
     test("should return {ok:false, why:invalid-end-date} if endDate is less then startDate", async () => {
-      const driver = await driverRepositoryFaker.save({
+      const driver = await driverFakeRepository.save({
         name: "John",
       });
 
@@ -420,7 +420,7 @@ describe("AutomobileUsageService", () => {
     });
 
     test("should not update if date has invalid format", async () => {
-      const driver = await driverRepositoryFaker.save({
+      const driver = await driverFakeRepository.save({
         name: "John",
       });
 
@@ -452,7 +452,7 @@ describe("AutomobileUsageService", () => {
     });
 
     test("should not update bad input", async () => {
-      const driver = await driverRepositoryFaker.save({
+      const driver = await driverFakeRepository.save({
         name: "John",
       });
 

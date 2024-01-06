@@ -1,14 +1,14 @@
 const {
-  DriverRepositoryFaker,
+  DriverFakeRepository,
 } = require("../../data-access/driver-fake-repository");
 const { DriverService } = require("../../domain/driver-service");
 
-const repositoryFaker = new DriverRepositoryFaker();
-const driverService = new DriverService(repositoryFaker);
+const driverFakeRepository = new DriverFakeRepository();
+const driverService = new DriverService(driverFakeRepository);
 
 describe("DriverService", () => {
   afterEach(async () => {
-    await repositoryFaker.reset();
+    await driverFakeRepository.reset();
   });
 
   describe("getAllDrivers", () => {
@@ -203,7 +203,7 @@ describe("DriverService", () => {
 
           expect(result).toBeUndefined();
           expect(
-            await repositoryFaker.getById(driver.driver.id),
+            await driverFakeRepository.getById(driver.driver.id),
           ).toBeUndefined();
         });
 
