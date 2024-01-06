@@ -7,31 +7,36 @@ import { FilterDTO, InputDTO, StorageDTO } from "../domain/driver-dtos";
 let db: Driver[] = [];
 
 export class DriverRepository implements DriverProvider {
+  private async filterDrivers(
+    filterFunction: (driver: Driver) => boolean,
+  ): Promise<Driver[]> {
+    return db.filter(filterFunction);
+  }
+
   public async getAll(): Promise<Driver[] | []> {
     return db;
   }
 
   public async getById(id: string): Promise<Driver> {
-    let driver = db.filter((driver) => driver.id === id);
-    return driver[0];
+    const [driver] = await this.filterDrivers((driver) => driver.id === id);
+    return driver;
   }
 
   public async filterBy(params: FilterDTO): Promise<Driver[] | []> {
     let drivers: Driver[] | [] = db;
-
     for (const property in params) {
-      drivers = drivers.filter(
+      drivers = await this.filterDrivers(
         (driver) =>
           driver[property as keyof Driver] ==
           params[property as keyof FilterDTO],
       );
     }
+
     return drivers;
   }
 
   public async save(driver: StorageDTO): Promise<Driver> {
     const id = uuidv4();
-
     const { name } = driver;
 
     db.push({ id, name });
@@ -39,19 +44,16 @@ export class DriverRepository implements DriverProvider {
   }
 
   public async update(id: string, newData: InputDTO): Promise<Driver | null> {
-    let driverUpdated: Driver | null = null;
+    const [driver] = await this.filterDrivers((driver) => driver.id === id);
 
-    db.forEach((driver) => {
-      if (driver.id === id) {
-        driver = Object.assign(driver, newData);
-        driverUpdated = driver;
-      }
-    });
+    if (driver) {
+      return Object.assign(driver, newData);
+    }
 
-    return driverUpdated;
+    return null;
   }
 
   public async delete(id: string): Promise<void> {
-    db = db.filter((driver) => driver.id !== id);
+    db = await this.filterDrivers((driver) => driver.id !== id);
   }
 }
