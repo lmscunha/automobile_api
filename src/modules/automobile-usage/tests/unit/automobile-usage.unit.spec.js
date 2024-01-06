@@ -1,5 +1,5 @@
 const {
-  AutomobileRepositoryFaker,
+  AutomobileFakeRepository,
 } = require("../../../automobiles/data-access/automobile-fake-repository");
 const {
   DriverFakeRepository,
@@ -12,7 +12,7 @@ const {
 } = require("../../domain/automobile-usage-service");
 
 const repositoryFaker = new AutomobileUsageRepositoryFaker();
-const automobileRepositoryFaker = new AutomobileRepositoryFaker();
+const automobileRepositoryFaker = new AutomobileFakeRepository();
 const driverFakeRepository = new DriverFakeRepository();
 const automobileUsageService = new AutomobileUsageService(
   repositoryFaker,
