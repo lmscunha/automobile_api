@@ -8,8 +8,7 @@ let db: Driver[] = [];
 
 export class DriverRepository implements DriverProvider {
   public async getAll(): Promise<Driver[] | []> {
-    const drivers = db;
-    return drivers;
+    return db;
   }
 
   public async getById(id: string): Promise<Driver> {
@@ -53,7 +52,6 @@ export class DriverRepository implements DriverProvider {
   }
 
   public async delete(id: string): Promise<void> {
-    const newDB = db.filter((driver) => driver.id !== id);
-    db = newDB;
+    db = db.filter((driver) => driver.id !== id);
   }
 }

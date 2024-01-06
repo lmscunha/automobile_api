@@ -25,7 +25,7 @@ describe("Drivers Resource", () => {
     });
 
     test("should filter the driver by name", async () => {
-      const driverCreated1 = await request(app).post("/drivers").send({
+      await request(app).post("/drivers").send({
         name: "John3",
       });
 
@@ -45,7 +45,7 @@ describe("Drivers Resource", () => {
     });
 
     test("should get the driver by ID", async () => {
-      const driverCreated1 = await request(app).post("/drivers").send({
+      await request(app).post("/drivers").send({
         name: "John4",
       });
 
