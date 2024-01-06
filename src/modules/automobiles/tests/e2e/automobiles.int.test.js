@@ -196,6 +196,15 @@ describe("Automobiles Resource", () => {
       expect(res.body.data.automobile.brand).toEqual("Foo");
     });
 
+    test("should not update the automobile if the automobile do not exist", async () => {
+      const res = await request(app).put("/automobiles/123").send({
+        color: "Blue",
+      });
+
+      expect(res.statusCode).toBe(404);
+      expect(res.body.message).toEqual("no-automobile-found");
+    });
+
     test("should not update the automobile if no data is send", async () => {
       const autoCreated = await request(app).post("/automobiles").send({
         licensePlate: "AAA1A29",
