@@ -8,18 +8,15 @@ let db: Automobile[] = [];
 
 export class AutomobileRepository implements AutomobileProvider {
   public async getAll(): Promise<Automobile[] | []> {
-    const automobiles = db;
-    return automobiles;
+    return db;
   }
 
-  public async getById(id: string): Promise<Automobile> {
-    let automobile = db.filter((auto) => auto.id === id);
-    return automobile[0];
+  public async getById(id: string): Promise<Automobile | null> {
+    return db.find((auto) => auto.id === id) || null;
   }
 
   public async filterBy(params: FilterDTO): Promise<Automobile[] | []> {
     let automobiles: Automobile[] | [] = db;
-
     for (const property in params) {
       automobiles = automobiles.filter(
         (auto) =>
@@ -27,47 +24,35 @@ export class AutomobileRepository implements AutomobileProvider {
           params[property as keyof FilterDTO],
       );
     }
+
     return automobiles;
   }
 
   public async isValidPlate(licensePlate: string): Promise<boolean> {
-    let result = false;
-    let automobile = db.filter((auto) => auto.licensePlate === licensePlate);
-
-    if (automobile.length === 0) {
-      result = true;
-    }
-
-    return result;
+    return !db.find((auto) => auto.licensePlate === licensePlate);
   }
 
   public async save(automobile: StorageDTO): Promise<Automobile> {
     const id = uuidv4();
-
-    const { licensePlate, color, brand } = automobile;
-
-    db.push({ id, licensePlate, color, brand });
-    return { id, licensePlate, color, brand };
+    const newAutomobile = { id, ...automobile };
+    db.push(newAutomobile);
+    return newAutomobile;
   }
 
   public async update(
     id: string,
     newData: InputDTO,
   ): Promise<Automobile | null> {
-    let automobile: Automobile | null = null;
+    const automobile = db.find((auto) => auto.id === id);
+    if (automobile) {
+      Object.assign(automobile, newData);
+      return automobile;
+    }
 
-    db.forEach((auto) => {
-      if (auto.id === id) {
-        auto = Object.assign(auto, newData);
-        automobile = auto;
-      }
-    });
-
-    return automobile;
+    return null;
   }
 
   public async delete(id: string): Promise<void> {
-    const newDB = db.filter((auto) => auto.id !== id);
-    db = newDB;
+    db = db.filter((auto) => auto.id !== id);
   }
 }
