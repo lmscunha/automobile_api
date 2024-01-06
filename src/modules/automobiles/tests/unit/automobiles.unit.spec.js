@@ -3,12 +3,12 @@ const {
 } = require("../../data-access/automobile-fake-repository");
 const { AutomobileService } = require("../../domain/automobile-service");
 
-const repositoryFaker = new AutomobileFakeRepository();
-const automobileService = new AutomobileService(repositoryFaker);
+const fakeRepository = new AutomobileFakeRepository();
+const automobileService = new AutomobileService(fakeRepository);
 
 describe("AutomobileService", () => {
   afterEach(async () => {
-    await repositoryFaker.reset();
+    await fakeRepository.reset();
   });
 
   describe("getAllAutomobiles", () => {
@@ -349,7 +349,7 @@ describe("AutomobileService", () => {
       );
 
       expect(result).toBeUndefined();
-      expect(await repositoryFaker.getById(auto.id)).toBeNull();
+      expect(await fakeRepository.getById(auto.id)).toBeNull();
     });
 
     test("should return {ok:false, why:invalid-id} if there is no id", async () => {
