@@ -108,6 +108,15 @@ describe("Drivers Resource", () => {
       expect(res.statusCode).toBe(403);
       expect(res.body.message).toEqual("invalid-data-to-update");
     });
+
+    test("should not update the driver if the driver is not registered", async () => {
+      const res = await request(app).put("/drivers/123").send({
+        name: "John8",
+      });
+
+      expect(res.statusCode).toBe(404);
+      expect(res.body.message).toEqual("no-driver-found");
+    });
   });
 
   describe("DELETE /drivers", () => {
@@ -122,7 +131,7 @@ describe("Drivers Resource", () => {
       expect(res.statusCode).toBe(204);
     });
 
-    test("should not featch a deleted driver", async () => {
+    test("should not fetch a deleted driver", async () => {
       const driverCreated = await request(app).post("/drivers").send({
         name: "John11",
       });
