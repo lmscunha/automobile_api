@@ -7,13 +7,19 @@ import { StorageDTO, UpdateDTO } from "../domain/automobile-usage-dtos";
 let db: AutomobileUsage[] = [];
 
 export class AutomobileUsageRepository implements AutomobileUsageProvider {
+  private async filterUsage(
+    filterFunction: (usage: AutomobileUsage) => boolean,
+  ): Promise<AutomobileUsage[]> {
+    return db.filter(filterFunction);
+  }
+
   public async getAll(): Promise<AutomobileUsage[] | []> {
     return db;
   }
 
   public async isValidDriver(driverId: string): Promise<boolean> {
     let result = false;
-    let isDriverUsingAnAuto = db.filter(
+    const isDriverUsingAnAuto = await this.filterUsage(
       (autoUsage) => autoUsage.driver.id === driverId && !autoUsage.endDate,
     );
 
@@ -35,19 +41,13 @@ export class AutomobileUsageRepository implements AutomobileUsageProvider {
   public async update(
     id: string,
     newData: UpdateDTO,
-  ): Promise<AutomobileUsage | null> {
+  ): Promise<AutomobileUsage | boolean> {
     let automobileUsage: AutomobileUsage | null | boolean = null;
 
-    db.forEach((autoUsage) => {
-      if (autoUsage.id === id) {
-        if (newData.endDate < autoUsage.startDate) {
-          return (automobileUsage = false);
-        }
-
-        autoUsage = Object.assign(autoUsage, newData);
-        automobileUsage = autoUsage;
-      }
-    });
+    let [usage] = await this.filterUsage((autoUsage) => autoUsage.id === id);
+    automobileUsage =
+      usage.startDate > newData.endDate ? false : Object.assign(usage, newData);
+    if (automobileUsage) usage = automobileUsage;
 
     return automobileUsage;
   }
