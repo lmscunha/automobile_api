@@ -41,13 +41,20 @@ export class AutomobileUsageRepository implements AutomobileUsageProvider {
   public async update(
     id: string,
     newData: UpdateDTO,
-  ): Promise<AutomobileUsage | boolean> {
+  ): Promise<AutomobileUsage | null | boolean> {
     let automobileUsage: AutomobileUsage | null | boolean = null;
 
-    let [usage] = await this.filterUsage((autoUsage) => autoUsage.id === id);
-    automobileUsage =
-      usage.startDate > newData.endDate ? false : Object.assign(usage, newData);
-    if (automobileUsage) usage = automobileUsage;
+    let [autoUsage] = await this.filterUsage(
+      (autoUsage) => autoUsage.id === id,
+    );
+    if (autoUsage?.id === id) {
+      if (newData.endDate < autoUsage.startDate) {
+        return (automobileUsage = false);
+      }
+
+      autoUsage = Object.assign(autoUsage, newData);
+      automobileUsage = autoUsage;
+    }
 
     return automobileUsage;
   }
