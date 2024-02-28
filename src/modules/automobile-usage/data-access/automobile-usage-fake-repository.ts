@@ -6,7 +6,7 @@ import { StorageDTO, UpdateDTO } from "../domain/automobile-usage-dtos";
 
 let db: AutomobileUsage[] = [];
 
-export class AutomobileUsageRepositoryFaker implements AutomobileUsageProvider {
+export class AutomobileUsageFakeRepository implements AutomobileUsageProvider {
   private async filterUsage(
     filterFunction: (usage: AutomobileUsage) => boolean,
   ): Promise<AutomobileUsage[]> {

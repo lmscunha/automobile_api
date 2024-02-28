@@ -5,24 +5,24 @@ const {
   DriverFakeRepository,
 } = require("../../../drivers/data-access/driver-fake-repository");
 const {
-  AutomobileUsageRepositoryFaker,
+  AutomobileUsageFakeRepository,
 } = require("../../data-access/automobile-usage-fake-repository");
 const {
   AutomobileUsageService,
 } = require("../../domain/automobile-usage-service");
 
-const repositoryFaker = new AutomobileUsageRepositoryFaker();
-const automobileRepositoryFaker = new AutomobileFakeRepository();
+const fakeRepository = new AutomobileUsageFakeRepository();
+const automobileFakeRepository = new AutomobileFakeRepository();
 const driverFakeRepository = new DriverFakeRepository();
 const automobileUsageService = new AutomobileUsageService(
-  repositoryFaker,
-  automobileRepositoryFaker,
+  fakeRepository,
+  automobileFakeRepository,
   driverFakeRepository,
 );
 
 describe("AutomobileUsageService", () => {
   afterEach(async () => {
-    await repositoryFaker.reset();
+    await fakeRepository.reset();
   });
 
   describe("getAllUsages", () => {
@@ -37,7 +37,7 @@ describe("AutomobileUsageService", () => {
         name: "John",
       });
 
-      const automobile = await automobileRepositoryFaker.save({
+      const automobile = await automobileFakeRepository.save({
         licensePlate: "AAA1A11",
         brand: "Foo",
         color: "Blue",
@@ -47,7 +47,7 @@ describe("AutomobileUsageService", () => {
         name: "Doe",
       });
 
-      const automobile2 = await automobileRepositoryFaker.save({
+      const automobile2 = await automobileFakeRepository.save({
         licensePlate: "AAA1A12",
         brand: "Foo",
         color: "Red",
@@ -79,7 +79,7 @@ describe("AutomobileUsageService", () => {
         name: "John",
       });
 
-      const automobile = await automobileRepositoryFaker.save({
+      const automobile = await automobileFakeRepository.save({
         licensePlate: "AAA1A11",
         brand: "Foo",
         color: "Blue",
@@ -117,7 +117,7 @@ describe("AutomobileUsageService", () => {
         name: "John",
       });
 
-      const automobile = await automobileRepositoryFaker.save({
+      const automobile = await automobileFakeRepository.save({
         licensePlate: "AAA1A11",
         brand: "Foo",
         color: "Blue",
@@ -162,7 +162,7 @@ describe("AutomobileUsageService", () => {
         name: "John",
       });
 
-      const automobile = await automobileRepositoryFaker.save({
+      const automobile = await automobileFakeRepository.save({
         licensePlate: "AAA1A11",
         brand: "Foo",
         color: "Blue",
@@ -194,7 +194,7 @@ describe("AutomobileUsageService", () => {
         name: "John",
       });
 
-      const automobile = await automobileRepositoryFaker.save({
+      const automobile = await automobileFakeRepository.save({
         licensePlate: "AAA1A11",
         brand: "Foo",
         color: "Blue",
@@ -246,7 +246,7 @@ describe("AutomobileUsageService", () => {
         name: "John",
       });
 
-      const automobile = await automobileRepositoryFaker.save({
+      const automobile = await automobileFakeRepository.save({
         licensePlate: "AAA1A11",
         brand: "Foo",
         color: "Blue",
@@ -287,7 +287,7 @@ describe("AutomobileUsageService", () => {
         name: "John",
       });
 
-      const automobile = await automobileRepositoryFaker.save({
+      const automobile = await automobileFakeRepository.save({
         licensePlate: "AAA1A11",
         brand: "Foo",
         color: "Blue",
@@ -333,7 +333,7 @@ describe("AutomobileUsageService", () => {
         name: "John",
       });
 
-      const automobile = await automobileRepositoryFaker.save({
+      const automobile = await automobileFakeRepository.save({
         licensePlate: "AAA1A11",
         brand: "Foo",
         color: "Blue",
@@ -363,7 +363,7 @@ describe("AutomobileUsageService", () => {
         name: "John",
       });
 
-      const automobile = await automobileRepositoryFaker.save({
+      const automobile = await automobileFakeRepository.save({
         licensePlate: "AAA1A11",
         brand: "Foo",
         color: "Blue",
@@ -392,7 +392,7 @@ describe("AutomobileUsageService", () => {
         name: "John",
       });
 
-      const automobile = await automobileRepositoryFaker.save({
+      const automobile = await automobileFakeRepository.save({
         licensePlate: "AAA1A11",
         brand: "Foo",
         color: "Blue",
@@ -424,7 +424,7 @@ describe("AutomobileUsageService", () => {
         name: "John",
       });
 
-      const automobile = await automobileRepositoryFaker.save({
+      const automobile = await automobileFakeRepository.save({
         licensePlate: "AAA1A11",
         brand: "Foo",
         color: "Blue",
@@ -456,7 +456,7 @@ describe("AutomobileUsageService", () => {
         name: "John",
       });
 
-      const automobile = await automobileRepositoryFaker.save({
+      const automobile = await automobileFakeRepository.save({
         licensePlate: "AAA1A11",
         brand: "Foo",
         color: "Blue",
