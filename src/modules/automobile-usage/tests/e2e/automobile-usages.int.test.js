@@ -222,6 +222,25 @@ describe("usages Resource", () => {
       expect(res.body.message).toEqual("invalid-date-format");
     });
 
+    test("should not update the automobile usage if is not registered", async () => {
+      await request(app).post("/automobiles").send({
+        licensePlate: "BAA1A13",
+        brand: "Foo",
+        color: "Blue",
+      });
+
+      await request(app).post("/drivers").send({
+        name: "John1",
+      });
+
+      const res = await request(app).put("/usages/123").send({
+        endDate: "16/12/23",
+      });
+
+      expect(res.statusCode).toBe(404);
+      expect(res.body.message).toEqual("no-automobile-usage-found");
+    });
+
     test("should not update the automobile-usage if the end date is less than the startDate", async () => {
       const auto1 = await request(app).post("/automobiles").send({
         licensePlate: "BAA1A15",

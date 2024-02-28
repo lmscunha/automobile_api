@@ -6,7 +6,13 @@ import { StorageDTO, UpdateDTO } from "../domain/automobile-usage-dtos";
 
 let db: AutomobileUsage[] = [];
 
-export class AutomobileUsageRepositoryFaker implements AutomobileUsageProvider {
+export class AutomobileUsageFakeRepository implements AutomobileUsageProvider {
+  private async filterUsage(
+    filterFunction: (usage: AutomobileUsage) => boolean,
+  ): Promise<AutomobileUsage[]> {
+    return db.filter(filterFunction);
+  }
+
   public async getAll(): Promise<AutomobileUsage[] | []> {
     return db;
   }
@@ -35,19 +41,20 @@ export class AutomobileUsageRepositoryFaker implements AutomobileUsageProvider {
   public async update(
     id: string,
     newData: UpdateDTO,
-  ): Promise<AutomobileUsage | null> {
+  ): Promise<AutomobileUsage | null | boolean> {
     let automobileUsage: AutomobileUsage | null | boolean = null;
 
-    db.forEach((autoUsage) => {
-      if (autoUsage.id === id) {
-        if (newData.endDate < autoUsage.startDate) {
-          return (automobileUsage = false);
-        }
-
-        autoUsage = Object.assign(autoUsage, newData);
-        automobileUsage = autoUsage;
+    let [autoUsage] = await this.filterUsage(
+      (autoUsage) => autoUsage.id === id,
+    );
+    if (autoUsage?.id === id) {
+      if (newData.endDate < autoUsage.startDate) {
+        return (automobileUsage = false);
       }
-    });
+
+      autoUsage = Object.assign(autoUsage, newData);
+      automobileUsage = autoUsage;
+    }
 
     return automobileUsage;
   }
